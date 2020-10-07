@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import  {Router} from "@angular/router";
 import {AuthService} from './shared/services/auth.service';
-import {UserService} from "@./shared/services/user.service";
+import {UserService} from "./shared/services/user.service";
 
 @Component({
   selector: 'app-root',
@@ -9,15 +9,17 @@ import {UserService} from "@./shared/services/user.service";
   styleUrls: ['./app.component.css']
 })
 export class AppComponent {
-  title = 'Ecommerce';
-  constructor(private userService: UserService, private auth: AuthService,
+  constructor(private userService: UserService, private auth: AuthService, router: Router) {
     auth.user$.subscribe(user => {
-      if (!user) return;
-      UserService.save(user);
+      if (!user) return; 
 
-      let returnurl = localStorage.getItem('returnUrl');
-      if (!returnurl) return;
-      localStorage.removeItem('returnUrl')
-      Router.navigateByUrl(returnurl)
-    }))
+      userService.save(user);
+
+      let returnUrl = localStorage.getItem('returnUrl');
+      if (!returnUrl) return; 
+
+      localStorage.removeItem('returnUrl');
+      router.navigateByUrl(returnUrl);
+    });
+  }
 }

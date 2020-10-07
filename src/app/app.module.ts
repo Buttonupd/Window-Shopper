@@ -8,7 +8,17 @@ import { AdminProductsComponent } from './admin/components/admin-products/admin-
 import { ProductFormComponent } from './admin/components/product-form/product-form.component';
 import { ProductCardComponent } from './shared/components/product-card/product-card.component';
 import { ProductQuantityComponent } from './shared/components/product-quantity/product-quantity.component';
-
+import {environment} from './../environments/environment';
+import { AdminModule } from './admin/admin.module';
+import { AdminAuthGuardService } from './admin/services/admin-auth-guard.service';
+import { LoginComponent } from './core/components/login/login.component';
+import { CoreModule } from './core/core.module';
+import { SharedModule } from './shared/shared.module';
+import { ProductsComponent } from './shopping/components/products/products.component';
+import { ShoppingModule } from './shopping/shopping.module';
+import { AngularFireModule } from '@angular/fire';
+import {AngularFireDatabaseModule} from '@angular/fire/database';
+import {AngularFirestore} from '@angular/fire/firestore';
 @NgModule({
   declarations: [
     AppComponent,
@@ -20,9 +30,18 @@ import { ProductQuantityComponent } from './shared/components/product-quantity/p
   ],
   imports: [
     BrowserModule,
-    AppRoutingModule
+    AppRoutingModule,
+    SharedModule,
+    AdminModule,
+    ShoppingModule,
+    CoreModule,
+    AngularFireModule.initializeApp(environment.firebase),
+    RouterModule.forRoot([
+      { path: '', component: ProductsComponent },
+      { path: 'login', component: LoginComponent },
+    ])  
   ],
-  providers: [],
+  providers: [AdminAuthGuardService,],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
